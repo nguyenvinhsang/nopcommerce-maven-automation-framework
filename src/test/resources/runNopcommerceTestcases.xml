@@ -1,0 +1,25 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE suite SYSTEM "http://testng.org/testng-1.0.dtd">
+<suite name="Nop Commerce" parallel="tests" thread-count="2">
+
+	<parameter name="url" value="https://demo.nopcommerce.com/" />
+	<listeners>
+		<listener class-name="commons.MethodListener" />
+		<listener class-name="reportConfig.ReportNGListener" />
+	</listeners>
+
+	<test name="Run on Firefox">
+		<parameter name="browser" value="firefox" />
+		<classes>
+			<class name="com.nopcommerce.login.Login_15_Close_Browser_Grid" />
+		</classes>
+	</test>
+
+	<test name="Run on chrome">
+		<parameter name="browser" value="chrome" />
+		<classes>
+			<class name="com.nopcommerce.login.Login_15_Close_Browser_Grid" />
+		</classes>
+	</test>
+
+</suite> <!-- Suite -->
