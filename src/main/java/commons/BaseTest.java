@@ -4,6 +4,7 @@ import java.io.IOException;
 import java.time.Duration;
 import java.util.List;
 
+import com.aventstack.extentreports.Status;
 import org.apache.logging.log4j.LogManager;
 import org.apache.logging.log4j.Logger;
 import org.openqa.selenium.WebDriver;
@@ -19,11 +20,13 @@ import factoryEnvironment.LambdaFactory;
 import factoryEnvironment.LocalFactory;
 import factoryEnvironment.SauceLapFactory;
 
+import static reportConfig.ExtentTestManager.getTest;
+
+
 public abstract class BaseTest {
 	private static ThreadLocal<WebDriver> driver = new ThreadLocal<WebDriver>();
 
 	protected final Logger log;
-
 	protected BaseTest() {
 		log = LogManager.getLogger(getClass());
 	}
@@ -77,6 +80,7 @@ public abstract class BaseTest {
 				log.info(" -------------------------- PASSED -------------------------- ");
 			} else {
 				log.info(" -------------------------- FAILED -------------------------- ");
+				getTest().log(Status.FAIL, "-------------------------- FAILED --------------------------");
 			}
 			Assert.assertTrue(condition);
 		} catch (Throwable e) {
@@ -110,6 +114,7 @@ public abstract class BaseTest {
 				log.info(" -------------------------- PASSED -------------------------- ");
 			} else {
 				log.info(" -------------------------- FAILED -------------------------- ");
+				getTest().log(Status.FAIL, "-------------------------- FAILED --------------------------");
 			}
 			Assert.assertFalse(condition);
 		} catch (Throwable e) {
@@ -118,6 +123,11 @@ public abstract class BaseTest {
 			Reporter.getCurrentTestResult().setThrowable(e);
 		}
 		return pass;
+	}
+
+	protected void logInfo(String logDetail){
+		log.info(logDetail);
+		getTest().log(Status.INFO, logDetail);
 	}
 
 	protected boolean verifyFalse(boolean condition) {
@@ -132,6 +142,7 @@ public abstract class BaseTest {
 		} catch (Throwable e) {
 			pass = false;
 			log.info(" -------------------------- FAILED -------------------------- ");
+			getTest().log(Status.FAIL, "-------------------------- FAILED --------------------------");
 			VerificationFailures.getFailures().addFailureForTest(Reporter.getCurrentTestResult(), e);
 			Reporter.getCurrentTestResult().setThrowable(e);
 		}
