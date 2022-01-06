@@ -26,24 +26,15 @@ public class PageGeneratorManager {
 	}
 
 	public static OrdersPageObject getOrdersPage(WebDriver driver) {
-		if (ordersPage == null) {
-			ordersPage = new OrdersPageObject(driver);
-		}
-		return ordersPage;
+		return new OrdersPageObject(driver);
 	}
 
 	public static NewPageObject getNewPage(WebDriver driver) {
-		if (newPage == null) {
-			newPage = new NewPageObject(driver);
-		}
-		return newPage;
+		return new NewPageObject(driver);
 	}
 
 	public static SearchPageObject getSearchPage(WebDriver driver) {
-		if (searchPage == null) {
-			searchPage = new SearchPageObject(driver);
-		}
-		return searchPage;
+		return new SearchPageObject(driver);
 	}
 
 }

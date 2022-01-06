@@ -1,8 +1,10 @@
 package pageObjects.user.nopCommerce;
 
+import org.openqa.selenium.Keys;
 import org.openqa.selenium.WebDriver;
 
 import commons.BasePage;
+import pageUIs.user.nopCommerce.BaseUI;
 import pageUIs.user.nopCommerce.RegisterPageUI;
 
 public class RegisterPageObject extends BasePage {
@@ -57,5 +59,14 @@ public class RegisterPageObject extends BasePage {
 		clickToElement(driver, RegisterPageUI.LOGOUT_LINK);
 		return PageGeneratorManager.getHomePage(driver);
 	}
+
+	public String getErrorMessageTextBoxByID(String idTextBox){
+		waitForElementClickable(driver, BaseUI.DYNAMIC_TEXT_BOX,idTextBox);
+		clickToElement(driver, BaseUI.DYNAMIC_TEXT_BOX,idTextBox);
+		sendKeyBoardToElement(driver, BaseUI.DYNAMIC_TEXT_BOX, Keys.ENTER,idTextBox);
+		waitForElementVisible(driver, BaseUI.DYNAMIC_ERROR_MESSAGE_TEXTBOX,idTextBox);
+		return getElementText(driver, BaseUI.DYNAMIC_ERROR_MESSAGE_TEXTBOX,idTextBox);
+	}
+
 
 }

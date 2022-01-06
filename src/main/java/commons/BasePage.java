@@ -16,6 +16,7 @@ import org.openqa.selenium.support.ui.ExpectedCondition;
 import org.openqa.selenium.support.ui.ExpectedConditions;
 import org.openqa.selenium.support.ui.Select;
 import org.openqa.selenium.support.ui.WebDriverWait;
+import pageUIs.user.nopCommerce.BaseUI;
 
 public class BasePage {
 
@@ -209,6 +210,11 @@ public class BasePage {
 	}
 
 	public void sendKeyToElement(WebDriver driver, String locator, String exValue, String... params) {
+		getElement(driver, getDynamicLocator(locator, params)).clear();
+		getElement(driver, getDynamicLocator(locator, params)).sendKeys(exValue);
+	}
+
+	public void sendKeyBoardToElement(WebDriver driver, String locator, Keys exValue, String... params) {
 		getElement(driver, getDynamicLocator(locator, params)).clear();
 		getElement(driver, getDynamicLocator(locator, params)).sendKeys(exValue);
 	}
@@ -546,6 +552,7 @@ public class BasePage {
 		explicitWait = new WebDriverWait(driver, Duration.ofSeconds(timeOut));
 		explicitWait.until(ExpectedConditions.presenceOfElementLocated(By.xpath(locator)));
 	}
+
 
 	private long timeOut= Long.parseLong(GlobalConstants.getGlobalConstants().getLongTimeout());
 

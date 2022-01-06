@@ -11,8 +11,9 @@
 	<test name="Run on firefox">
 		<parameter name="browser" value="firefox" />
 		<classes>
-			<class name="com.nopcommerce.login.Test_Framework" />
+			<class name="com.nopcommerce.user.Register_01_Register_Nopcommerce" />
 		</classes>
+
 	</test>
 
 

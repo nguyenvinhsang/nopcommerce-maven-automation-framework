@@ -9,10 +9,10 @@ public class DataUtil {
 		return new DataUtil();
 	}
 	
-	public DataUtil() {
+	private DataUtil() {
 		faker =new Faker();
 	}
-	
+
 	public String getFistName() {
 		return faker.name().firstName();
 	}
