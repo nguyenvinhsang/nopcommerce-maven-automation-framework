@@ -3,11 +3,10 @@ package factoryEnvironment;
 import java.net.MalformedURLException;
 import java.net.URL;
 
+import commons.GlobalConstants;
 import org.openqa.selenium.WebDriver;
 import org.openqa.selenium.remote.DesiredCapabilities;
 import org.openqa.selenium.remote.RemoteWebDriver;
-
-import commons.GlobalConstants;
 
 public class LambdaFactory {
 	private WebDriver driver;

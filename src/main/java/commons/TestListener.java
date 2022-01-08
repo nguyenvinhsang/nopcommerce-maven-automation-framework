@@ -14,6 +14,8 @@ import static reportConfig.ExtentTestManager.getTest;
 
 public class TestListener extends BaseTest implements ITestListener,IInvokedMethodListener {
     private WebDriver driver;
+    private static       int count  = 0;
+    private final static int maxTry = 1;
 
     private static String getTestMethodName(ITestResult iTestResult) {
         return iTestResult.getMethod().getConstructorOrMethod().getName();
@@ -26,7 +28,6 @@ public class TestListener extends BaseTest implements ITestListener,IInvokedMeth
     @Override
     public void onFinish(ITestContext iTestContext) {
         log.info("Finish method " + iTestContext.getName());
-        //Do tier down operations for ExtentReports reporting!
         ExtentManager.extentReports.flush();
     }
     @Override
@@ -36,7 +37,6 @@ public class TestListener extends BaseTest implements ITestListener,IInvokedMeth
     @Override
     public void onTestSuccess(ITestResult iTestResult) {
         log.info(getTestMethodName(iTestResult) + " test is succeed.");
-        //ExtentReports log operation for passed tests.
         getTest().log(Status.PASS, "Test "+getTestMethodName(iTestResult)+" passed");
     }
     @Override
@@ -47,7 +47,6 @@ public class TestListener extends BaseTest implements ITestListener,IInvokedMeth
     @Override
     public void onTestSkipped(ITestResult iTestResult) {
         log.info(getTestMethodName(iTestResult) + " test is skipped.");
-        //ExtentReports log operation for skipped tests.
         getTest().log(Status.SKIP, "Test "+getTestMethodName(iTestResult)+" Skipped");
     }
     @Override

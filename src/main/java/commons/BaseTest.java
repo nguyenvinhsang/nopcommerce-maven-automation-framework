@@ -1,14 +1,7 @@
 package commons;
 
-import java.io.File;
-import java.io.IOException;
-import java.time.Duration;
-import java.util.Base64;
-import java.util.List;
-import java.util.Objects;
-
 import com.aventstack.extentreports.Status;
-import org.apache.commons.io.FileUtils;
+import factoryEnvironment.*;
 import org.apache.logging.log4j.LogManager;
 import org.apache.logging.log4j.Logger;
 import org.openqa.selenium.OutputType;
@@ -18,13 +11,11 @@ import org.openqa.selenium.logging.LogEntries;
 import org.openqa.selenium.logging.LogEntry;
 import org.testng.Assert;
 import org.testng.Reporter;
+import org.testng.asserts.SoftAssert;
 
-import factoryEnvironment.BrowserStaskFactory;
-import factoryEnvironment.CrossBrowserFactory;
-import factoryEnvironment.GridFactory;
-import factoryEnvironment.LambdaFactory;
-import factoryEnvironment.LocalFactory;
-import factoryEnvironment.SauceLapFactory;
+import java.io.IOException;
+import java.time.Duration;
+import java.util.List;
 
 import static reportConfig.ExtentTestManager.getTest;
 
@@ -84,15 +75,18 @@ public abstract class BaseTest {
 		try {
 			if (condition == true) {
 				log.info(" -------------------------- PASSED -------------------------- ");
+				getTest().log(Status.INFO, "-------------------------- PASSED --------------------------");
 			} else {
 				log.info(" -------------------------- FAILED -------------------------- ");
-				getTest().log(Status.FAIL, "-------------------------- FAILED --------------------------");
 			}
 			Assert.assertTrue(condition);
 		} catch (Throwable e) {
 			pass = false;
-			VerificationFailures.getFailures().addFailureForTest(Reporter.getCurrentTestResult(), e);
 			Reporter.getCurrentTestResult().setThrowable(e);
+			String scrBase64 = ((TakesScreenshot) driver.get()).getScreenshotAs(OutputType.BASE64);
+			String imgBase64= "<img src="+"data:image/png;base64,"+scrBase64+" /"+">";
+			getTest().log(Status.FAIL, "-------------------------- FAILED --------------------------"+"</br>"+Reporter.getCurrentTestResult().getThrowable()+"</br>"+imgBase64);
+			VerificationFailures.getFailures().addFailureForTest(Reporter.getCurrentTestResult(), e);
 		}
 		return pass;
 	}
@@ -118,15 +112,18 @@ public abstract class BaseTest {
 		try {
 			if (condition == false) {
 				log.info(" -------------------------- PASSED -------------------------- ");
+				getTest().log(Status.INFO, "-------------------------- PASSED --------------------------");
 			} else {
 				log.info(" -------------------------- FAILED -------------------------- ");
-				getTest().log(Status.FAIL, "-------------------------- FAILED --------------------------");
 			}
 			Assert.assertFalse(condition);
 		} catch (Throwable e) {
 			pass = false;
-			VerificationFailures.getFailures().addFailureForTest(Reporter.getCurrentTestResult(), e);
 			Reporter.getCurrentTestResult().setThrowable(e);
+			String scrBase64 = ((TakesScreenshot) driver.get()).getScreenshotAs(OutputType.BASE64);
+			String imgBase64= "<img src="+"data:image/png;base64,"+scrBase64+" /"+">";
+			getTest().log(Status.FAIL, "-------------------------- FAILED --------------------------"+"</br>"+Reporter.getCurrentTestResult().getThrowable()+"</br>"+imgBase64);
+			VerificationFailures.getFailures().addFailureForTest(Reporter.getCurrentTestResult(), e);
 		}
 		return pass;
 	}

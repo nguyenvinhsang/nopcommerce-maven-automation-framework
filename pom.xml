@@ -27,8 +27,6 @@
 			<version>${testng.version}</version>
 		</dependency>
 
-
-
 		<dependency>
 			<groupId>org.projectlombok</groupId>
 			<artifactId>lombok</artifactId>
@@ -54,7 +52,6 @@
 			<version>${webdrivermanager.version}</version>
 		</dependency>
 
-
 		<dependency>
 			<groupId>com.fasterxml.jackson.core</groupId>
 			<artifactId>jackson-core</artifactId>
@@ -66,7 +63,6 @@
 			<artifactId>jackson-databind</artifactId>
 			<version>${jackson.version}</version>
 		</dependency>
-
 
 		<dependency>
 			<groupId>com.github.javafaker</groupId>
@@ -80,20 +76,17 @@
 			<version>${log4j.version}</version>
 		</dependency>
 
-
 		<dependency>
 			<groupId>org.aspectj</groupId>
 			<artifactId>aspectjweaver</artifactId>
 			<version>${aspectj.version}</version>
 		</dependency>
 
-
 		<dependency>
 			<groupId>com.aventstack</groupId>
 			<artifactId>extentreports</artifactId>
 			<version>${extentreports-version}</version>
 		</dependency>
-
 
 		<dependency>
 			<groupId>org.uncommons</groupId>

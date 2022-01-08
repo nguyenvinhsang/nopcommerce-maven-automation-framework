@@ -8,12 +8,11 @@ import io.github.bonigarcia.wdm.WebDriverManager;
 
 public class HFireFoxBrowserManager implements IBrowser {
 	@Override
-	public WebDriver getBrowserDriver() {
+	public WebDriver getBrowserDrive() {
 		WebDriverManager.firefoxdriver().setup();
 		FirefoxOptions firefoxOptions = new FirefoxOptions();
 		firefoxOptions.setHeadless(true);
 		firefoxOptions.addArguments("window-size=1920*1080");
 		return new FirefoxDriver(firefoxOptions);
 	}
-
 }

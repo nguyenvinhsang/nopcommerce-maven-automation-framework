@@ -5,11 +5,10 @@ import java.net.URL;
 import java.util.HashMap;
 import java.util.Map;
 
+import commons.GlobalConstants;
 import org.openqa.selenium.WebDriver;
 import org.openqa.selenium.remote.DesiredCapabilities;
 import org.openqa.selenium.remote.RemoteWebDriver;
-
-import commons.GlobalConstants;
 
 public class SauceLapFactory {
 	private WebDriver driver;

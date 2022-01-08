@@ -1,15 +1,7 @@
 package factoryEnvironment;
 
+import factoryBrowser.*;
 import org.openqa.selenium.WebDriver;
-
-import factoryBrowser.BrowserList;
-import factoryBrowser.BrowserNotSupportedException;
-import factoryBrowser.ChromeBrowserManager;
-import factoryBrowser.EdgeBrowserManager;
-import factoryBrowser.FireFoxBrowserManager;
-import factoryBrowser.HChromeBrowserManager;
-import factoryBrowser.HFireFoxBrowserManager;
-import factoryBrowser.SafariBrowserManager;
 
 public class LocalFactory {
 
@@ -24,22 +16,22 @@ public class LocalFactory {
 		BrowserList browser = BrowserList.valueOf(browserName.toUpperCase());
 		switch (browser) {
 		case CHROME:
-			driver = new ChromeBrowserManager().getBrowserDriver();
+			driver = new ChromeBrowserManager().getBrowserDrive();
 			break;
 		case FIREFOX:
-			driver = new FireFoxBrowserManager().getBrowserDriver();
+			driver = new FireFoxBrowserManager().getBrowserDrive();
 			break;
 		case EDGE_CHROMIUM:
-			driver = new EdgeBrowserManager().getBrowserDriver();
+			driver = new EdgeBrowserManager().getBrowserDrive();
 			break;
 		case SAFARI:
-			driver = new SafariBrowserManager().getBrowserDriver();
+			driver = new SafariBrowserManager().getBrowserDrive();
 			break;
 		case H_CHROME:
-			driver = new HChromeBrowserManager().getBrowserDriver();
+			driver = new HChromeBrowserManager().getBrowserDrive();
 			break;
 		case H_FIREFOX:
-			driver = new HFireFoxBrowserManager().getBrowserDriver();
+			driver = new HFireFoxBrowserManager().getBrowserDrive();
 			break;
 		default:
 			throw new BrowserNotSupportedException(browserName);

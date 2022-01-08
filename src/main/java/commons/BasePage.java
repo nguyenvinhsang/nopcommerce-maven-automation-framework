@@ -279,6 +279,11 @@ public class BasePage {
 		jsExecutor.executeScript("arguments[0].scrollIntoView(true);", getElement(driver, locator));
 	}
 
+	public void scrollToElementJs(WebDriver driver, String locator,String...params) {
+		jsExecutor = (JavascriptExecutor) driver;
+		jsExecutor.executeScript("arguments[0].scrollIntoView(true);", getElement(driver, getDynamicLocator(locator, params)));
+	}
+
 	public void scrollToElementByWebElementJs(WebDriver driver, WebElement element) {
 		jsExecutor = (JavascriptExecutor) driver;
 		jsExecutor.executeScript("arguments[0].scrollIntoView(true);", element);
@@ -552,6 +557,20 @@ public class BasePage {
 		explicitWait = new WebDriverWait(driver, Duration.ofSeconds(timeOut));
 		explicitWait.until(ExpectedConditions.presenceOfElementLocated(By.xpath(locator)));
 	}
+
+	//Nopcommerce
+
+	public void clickToHeaderLinkByText(WebDriver driver,String...nameLink){
+		waitForElementClickable(driver, BaseUI.DYNAMIC_HEADER_LINK,nameLink);
+		clickToElement(driver, BaseUI.DYNAMIC_HEADER_LINK,nameLink);
+	}
+
+	public void sendKeyBoardToElementNoClear(WebDriver driver, String locator, Keys exValue, String... params) {
+		getElement(driver, getDynamicLocator(locator, params)).sendKeys(exValue);
+	}
+
+
+
 
 
 	private long timeOut= Long.parseLong(GlobalConstants.getGlobalConstants().getLongTimeout());

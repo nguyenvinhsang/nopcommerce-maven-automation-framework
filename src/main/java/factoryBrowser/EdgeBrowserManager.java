@@ -3,16 +3,17 @@ package factoryBrowser;
 import java.util.Collections;
 import java.util.HashMap;
 
+import commons.GlobalConstants;
 import org.openqa.selenium.WebDriver;
 import org.openqa.selenium.edge.EdgeDriver;
 import org.openqa.selenium.edge.EdgeOptions;
 
-import commons.GlobalConstants;
 import io.github.bonigarcia.wdm.WebDriverManager;
 
-public class EdgeBrowserManager implements IBrowser {
+public class EdgeBrowserManager implements IBrowser{
+
 	@Override
-	public WebDriver getBrowserDriver() {
+	public WebDriver getBrowserDrive() {
 		WebDriverManager.edgedriver().setup();
 		EdgeOptions options = new EdgeOptions();
 		options.setExperimentalOption("useAutomationExtension", false);
@@ -20,7 +21,7 @@ public class EdgeBrowserManager implements IBrowser {
 		options.addArguments("--disable-notifications");
 		options.addArguments("--disable-geolocation");
 		options.addArguments("-inprivate");
-		
+
 		HashMap<String, Object> prefs = new HashMap<String, Object>();
 		prefs.put("credentials_enable_service", false);
 		prefs.put("profile.password_manager_enabled", false);
@@ -30,5 +31,4 @@ public class EdgeBrowserManager implements IBrowser {
 
 		return new EdgeDriver(options);
 	}
-
 }
