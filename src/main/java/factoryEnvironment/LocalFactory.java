@@ -16,22 +16,22 @@ public class LocalFactory {
 		BrowserList browser = BrowserList.valueOf(browserName.toUpperCase());
 		switch (browser) {
 		case CHROME:
-			driver = new ChromeBrowserManager().getBrowserDrive();
+			driver = new ChromeBrowserManager().getBrowserDriver();
 			break;
 		case FIREFOX:
-			driver = new FireFoxBrowserManager().getBrowserDrive();
+			driver = new FireFoxBrowserManager().getBrowserDriver();
 			break;
 		case EDGE_CHROMIUM:
-			driver = new EdgeBrowserManager().getBrowserDrive();
+			driver = new EdgeBrowserManager().getBrowserDriver();
 			break;
 		case SAFARI:
-			driver = new SafariBrowserManager().getBrowserDrive();
+			driver = new SafariBrowserManager().getBrowserDriver();
 			break;
 		case H_CHROME:
-			driver = new HChromeBrowserManager().getBrowserDrive();
+			driver = new HChromeBrowserManager().getBrowserDriver();
 			break;
 		case H_FIREFOX:
-			driver = new HFireFoxBrowserManager().getBrowserDrive();
+			driver = new HFireFoxBrowserManager().getBrowserDriver();
 			break;
 		default:
 			throw new BrowserNotSupportedException(browserName);

@@ -1,6 +1,7 @@
 package commons;
 
 import lombok.Getter;
+import utilities.DataUtil;
 
 import java.io.File;
 
@@ -19,8 +20,9 @@ public class GlobalConstants {
 	private final String stagingAppUrl = "";
 	private final String testingAppUrl = "";
 
-	private final String sortTimeout = "";
+	private final String shortTimeout = "2";
 	private final String longTimeout = "30";
+
 
 	private final String projectPath = System.getProperty("user.dir");
 	private final String uploadFolderPath = projectPath + File.separator + "uploadFiles" + File.separator;

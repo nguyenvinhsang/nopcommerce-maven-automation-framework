@@ -17,39 +17,42 @@ import java.lang.reflect.Method;
 import static reportConfig.ExtentTestManager.startTest;
 
 
-public class Register_01_Register_Nopcommerce extends BaseTest {
+public class User_01_Register_Nopcommerce extends BaseTest {
     DataUtil fakeData;
     HomePageObject homePage;
     RegisterPageObject registerPage;
     WebDriver driver;
+
+    private String txtLastName= fakeData.getData().getLastName();
+    private String txtFistName= fakeData.getData().getFistName();
     private String txtEmail = fakeData.getData().getEmailAddress();
     private String txtPassWord=fakeData.getData().getPassWord();
+
 
     @Parameters({"browser","url","envName","ipAddress","portNumber","osName","osVersion"})
     @BeforeClass
     public void initBrowser(@Optional("chrome") String browserName, @Optional("dev") String appUrl, @Optional("local") String envName, @Optional("localhost")String ipAddress, @Optional("4444") String portNumber, @Optional("Windows") String osName, @Optional("10") String osVersion) {
         log.info("Pre-Condition-Step: 01 Open browser "+browserName+" and navigate to " + "appUrl");
         driver = getBrowserDriver(browserName, appUrl, envName, ipAddress, portNumber, osName, osVersion);
+        homePage = PageGeneratorManager.getHomePage(driver);
     }
-
     @Test
     public void User_Register_01_With_Empty_Value(Method method) {
         startTest(method.getName(),"Register_With_Empty_Value_Send_Key_Enter");
-        homePage = PageGeneratorManager.getHomePage(driver);
         logInfo("User_01_Register_To_System - Step 01 : Click To Register Link");
         registerPage= homePage.clickToRegisterLink(driver);
         logInfo("User_01_Register_To_System - Step 02: Verify error message for 'First name' text box displayed when empty value. (First name is required.)");
-        verifyEquals(registerPage.checkMessageByTextBoxID("FirstName"),"First name is required.");
+        verifyEquals(registerPage.getMessageErrorTextBox("FirstName",""),"First name is required.");
         logInfo("User_01_Register_To_System - Step 03: Verify error message for 'Last Name' text box displayed when empty value. (Last Name is required.)");
-        verifyEquals(registerPage.checkMessageByTextBoxID("LastName"),"Last name is required.");
+        verifyEquals(registerPage.getMessageErrorTextBox("LastName",""),"Last name is required.");
         logInfo("User_01_Register_To_System - Step 04: Verify error message for 'Email' text box displayed when empty value. (Email is required.)");
         registerPage.refreshToPage(driver);
-        verifyEquals(registerPage.checkMessageByTextBoxID("Email"),"Email is required.");
+        verifyEquals(registerPage.getMessageErrorTextBox("Email",""),"Email is required.");
         logInfo("User_01_Register_To_System - Step 05: Verify error message for 'Password' text box displayed when empty value. (Password is required.)");
         registerPage.refreshToPage(driver);
-        verifyEquals(registerPage.checkMessageByTextBoxID("Password"),"Password is required.");
+        verifyEquals(registerPage.getMessageErrorTextBox("Password",""),"Password is required.");
         logInfo("User_01_Register_To_System - Step 05: Verify error message for 'ConfirmPassword' text box displayed when empty value. (Password is required.)");
-        verifyEquals(registerPage.checkMessageByTextBoxID("ConfirmPassword"),"Password is required.");
+        verifyEquals(registerPage.getMessageErrorTextBox("ConfirmPassword",""),"Password is required.");
     }
 
     @Test
@@ -57,10 +60,10 @@ public class Register_01_Register_Nopcommerce extends BaseTest {
         startTest(method.getName(),"Register_With_Invalid_Email");
         logInfo("User_01_Register_To_System - Step 01 : Verify error message for 'Email' text box displayed when invalid value (123asd) .(Wrong email)");
         registerPage.refreshToPage(driver);
-        verifyEquals(registerPage.checkMessageByTextBoxID("Email","123asd"),"Wrong email");
+        verifyEquals(registerPage.getMessageErrorTextBox("Email","123asd"),"Wrong email");
         logInfo("User_01_Register_To_System - Step 02 : Verify error message for 'Email' text box displayed when invalid value (zxczxczx@zczxc.) .(Wrong email)");
         registerPage.refreshToPage(driver);
-        verifyEquals(registerPage.checkMessageByTextBoxID("Email","zxczxczx@zczxc."),"Wrong email");
+        verifyEquals(registerPage.getMessageErrorTextBox("Email","zxczxczx@zczxc."),"Wrong email");
     }
 
     @Test
@@ -70,10 +73,10 @@ public class Register_01_Register_Nopcommerce extends BaseTest {
         registerPage= homePage.clickToRegisterLink(driver);
         logInfo("User_01_Register_To_System - Step 03 : Click To Mail Radio");
         registerPage.clickToMaleRadio();
-        logInfo("User_01_Register_To_System - Step 04 : Enter to Fist Name Text Box witch value sang ");
-        registerPage.inputFristNameTextBox("sang");
-        logInfo("User_01_Register_To_System - Step 05 : Enter to Last Name Text Box witch value nguyen ");
-        registerPage.inputLastNameTextBox("nguyen");
+        logInfo("User_01_Register_To_System - Step 04 : Enter to Fist Name Text Box witch value sang "+ txtFistName);
+        registerPage.inputFristNameTextBox(txtFistName);
+        logInfo("User_01_Register_To_System - Step 05 : Enter to Last Name Text Box witch value nguyen "+txtLastName);
+        registerPage.inputLastNameTextBox(txtLastName);
         logInfo("User_01_Register_To_System - Step 06 : Enter to to Email Text Box witch value  "+txtEmail);
         registerPage.inputEmailTextBox(txtEmail);
         logInfo("User_01_Register_To_System - Step 07 : Enter to PassWord Text Box witch value "+txtPassWord);
@@ -98,10 +101,10 @@ public class Register_01_Register_Nopcommerce extends BaseTest {
         registerPage=PageGeneratorManager.getRegisterPage(driver);
         logInfo("User_01_Register_To_System - Step 02 : Click To Mail Radio");
         registerPage.clickToMaleRadio();
-        logInfo("User_01_Register_To_System - Step 03 : Enter to Fist Name Text Box witch value sang ");
-        registerPage.inputFristNameTextBox("sang");
-        logInfo("User_01_Register_To_System - Step 04 : Enter to Last Name Text Box witch value nguyen ");
-        registerPage.inputLastNameTextBox("nguyen");
+        logInfo("User_01_Register_To_System - Step 03 : Enter to Fist Name Text Box witch value "+ txtFistName);
+        registerPage.inputFristNameTextBox(txtFistName);
+        logInfo("User_01_Register_To_System - Step 04 : Enter to Last Name Text Box witch value "+ txtLastName);
+        registerPage.inputLastNameTextBox(txtLastName);
         logInfo("User_01_Register_To_System - Step 05 : Input Email already exits with value "+ txtEmail);
         registerPage.inputEmailTextBox(txtEmail);
         logInfo("User_01_Register_To_System - Step 06 : Enter to PassWord Text Box witch value "+txtPassWord);
@@ -136,9 +139,25 @@ public class Register_01_Register_Nopcommerce extends BaseTest {
         startTest(method.getName(),"Register_With_Valid_Value");
         logInfo("User_01_Register_To_System - Step 01 : Enter to Confirm PassWord Text Box witch value (12345Addf) and verify message 'The password and confirmation password do not match.' ");
         registerPage.refreshToPage(driver);
-        verifyEquals(registerPage.checkMessageByTextBoxID("ConfirmPassword","12345Addf"),"The password and confirmation password do not match.");
+        verifyEquals(registerPage.getMessageErrorTextBox("ConfirmPassword","12345Addf"),"The password and confirmation password do not match.");
     }
-
+    @Test
+    public void User_Register_07_No_Message_Error_With_True_Value(Method method){
+        startTest(method.getName(),"Register_With_Valid_Value");
+        registerPage= homePage.clickToRegisterLink(driver);
+        logInfo("User_Register_07_No_Message_Error_With_Valid_Value - Step 01 : Verify message for  FirstName  (sang123)" );
+        registerPage.refreshToPage(driver);
+        verifyTrue(registerPage.checkErrorMessageTrueValueTextBoxByID("FirstName","Sang123"));
+        logInfo("User_Register_07_No_Message_Error_With_Valid_Value - Step 03 : Verify message for  LastName  (Nguyen)" );
+        registerPage.refreshToPage(driver);
+        verifyTrue(registerPage.checkErrorMessageTrueValueTextBoxByID("LastName","Nguyen"));
+        logInfo("User_Register_07_No_Message_Error_With_Valid_Value - Step 04 : Verify message for Email  (jonhkal154@gmail.com)" );
+        registerPage.refreshToPage(driver);
+        verifyTrue(registerPage.checkErrorMessageTrueValueTextBoxByID("Email","jonhkal154@gmail.com"));
+        logInfo("User_Register_07_No_Message_Error_With_Valid_Value - Step 04 : Verify message for Password  (1557ahdgt)" );
+        registerPage.refreshToPage(driver);
+        verifyTrue(registerPage.checkErrorMessageTrueValueTextBoxByID("Password","1557ahdgt"));
+    }
 
     @Parameters({"browser"})
     @AfterClass(alwaysRun = true)

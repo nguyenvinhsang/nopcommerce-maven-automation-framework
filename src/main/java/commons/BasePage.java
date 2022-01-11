@@ -569,6 +569,27 @@ public class BasePage {
 		getElement(driver, getDynamicLocator(locator, params)).sendKeys(exValue);
 	}
 
+	public void waitForElementInvisibleOfElementLocated(WebDriver driver,WebElement element) {
+		explicitWait = new WebDriverWait(driver, Duration.ofSeconds(timeOut));
+		explicitWait.until(ExpectedConditions.invisibilityOf(element));
+	}
+	public void waitForElementVisibleOfElementLocated(WebDriver driver,WebElement element) {
+		timeOut = Long.parseLong(GlobalConstants.getGlobalConstants().getShortTimeout());
+		explicitWait = new WebDriverWait(driver, Duration.ofSeconds(timeOut));
+		explicitWait.until(ExpectedConditions.visibilityOf(element));
+		timeOut = Long.parseLong(GlobalConstants.getGlobalConstants().getLongTimeout());
+	}
+
+	public void waitForElementVisibleShort(WebDriver driver,String locator, String...params) {
+		timeOut = Long.parseLong(GlobalConstants.getGlobalConstants().getShortTimeout());
+		driver.manage().timeouts().implicitlyWait(Duration.ofSeconds(timeOut));
+		explicitWait = new WebDriverWait(driver, Duration.ofSeconds(timeOut));
+		explicitWait.until(ExpectedConditions.visibilityOf(getElement(driver, getDynamicLocator(locator, params))));
+		timeOut = Long.parseLong(GlobalConstants.getGlobalConstants().getLongTimeout());
+		driver.manage().timeouts().implicitlyWait(Duration.ofSeconds(timeOut));
+	}
+
+
 
 
 

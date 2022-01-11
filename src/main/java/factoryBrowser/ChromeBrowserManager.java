@@ -12,7 +12,7 @@ import io.github.bonigarcia.wdm.WebDriverManager;
 
 public class ChromeBrowserManager implements IBrowser {
 	@Override
-	public WebDriver getBrowserDrive() {
+	public WebDriver getBrowserDriver() {
 		WebDriverManager.chromedriver().setup();
 		ChromeOptions options = new ChromeOptions();
 		options.setExperimentalOption("useAutomationExtension", true);

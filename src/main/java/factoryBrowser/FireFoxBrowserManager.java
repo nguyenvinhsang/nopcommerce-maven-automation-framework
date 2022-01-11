@@ -11,7 +11,7 @@ public class FireFoxBrowserManager implements IBrowser {
 
 
 	@Override
-	public WebDriver getBrowserDrive() {
+	public WebDriver getBrowserDriver() {
 		WebDriverManager.firefoxdriver().setup();
 		FirefoxOptions options =new FirefoxOptions();
 		System.setProperty(FirefoxDriver.SystemProperty.DRIVER_USE_MARIONETTE, "true");

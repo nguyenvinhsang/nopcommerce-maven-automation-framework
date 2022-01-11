@@ -8,7 +8,7 @@ import io.github.bonigarcia.wdm.WebDriverManager;
 
 public class HFireFoxBrowserManager implements IBrowser {
 	@Override
-	public WebDriver getBrowserDrive() {
+	public WebDriver getBrowserDriver() {
 		WebDriverManager.firefoxdriver().setup();
 		FirefoxOptions firefoxOptions = new FirefoxOptions();
 		firefoxOptions.setHeadless(true);

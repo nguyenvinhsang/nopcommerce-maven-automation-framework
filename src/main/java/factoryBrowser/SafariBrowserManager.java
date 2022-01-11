@@ -6,7 +6,7 @@ import org.openqa.selenium.safari.SafariOptions;
 
 public class SafariBrowserManager implements IBrowser {
 	@Override
-	public WebDriver getBrowserDrive() {
+	public WebDriver getBrowserDriver() {
 		SafariOptions options = new SafariOptions();
 		options.setCapability("safari.cleanSession", true);
 		return new SafariDriver(options);

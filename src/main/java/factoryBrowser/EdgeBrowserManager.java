@@ -13,7 +13,7 @@ import io.github.bonigarcia.wdm.WebDriverManager;
 public class EdgeBrowserManager implements IBrowser{
 
 	@Override
-	public WebDriver getBrowserDrive() {
+	public WebDriver getBrowserDriver() {
 		WebDriverManager.edgedriver().setup();
 		EdgeOptions options = new EdgeOptions();
 		options.setExperimentalOption("useAutomationExtension", false);

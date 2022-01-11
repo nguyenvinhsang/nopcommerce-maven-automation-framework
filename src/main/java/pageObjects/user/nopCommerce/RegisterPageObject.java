@@ -5,6 +5,7 @@ import org.openqa.selenium.Keys;
 import org.openqa.selenium.WebDriver;
 
 import commons.BasePage;
+import org.openqa.selenium.WebElement;
 import pageUIs.user.nopCommerce.BaseUI;
 import pageUIs.user.nopCommerce.RegisterPageUI;
 
@@ -55,6 +56,7 @@ public class RegisterPageObject extends BasePage {
 
 	public void clickToRegisterButton() {
 		waitForElementClickable(driver, RegisterPageUI.REGISTER_BUTTON);
+		scrollToElementJs(driver, RegisterPageUI.REGISTER_BUTTON);
 		clickToElement(driver, RegisterPageUI.REGISTER_BUTTON);
 	}
 
@@ -64,38 +66,59 @@ public class RegisterPageObject extends BasePage {
 		return PageGeneratorManager.getHomePage(driver);
 	}
 
-	public String checkMessageByTextBoxID(String idTextBox){
-		String check="";
-		waitForElementClickable(driver, BaseUI.DYNAMIC_TEXT_BOX,idTextBox);
-		clickToElement(driver, BaseUI.DYNAMIC_TEXT_BOX,idTextBox);
-		sendKeyBoardToElement(driver, BaseUI.DYNAMIC_TEXT_BOX, Keys.ENTER,idTextBox);
-		waitForElementVisible(driver, BaseUI.DYNAMIC_ERROR_MESSAGE_TEXT_BOX,idTextBox);
-		check =getElementText(driver, BaseUI.DYNAMIC_ERROR_MESSAGE_TEXT_BOX,idTextBox);
-		String check2 =checkMessageCLick(idTextBox,"");
-		if (check2.equals(check)){
-			return check;
-		}else {
-			check ="false";
+	public String getMessageErrorTextBox(String idTextBox, String textBoxValue){
+		String messageEnter="";
+		String messageClick="";
+		String message ="";
+		try {
+			waitForElementClickable(driver,BaseUI.DYNAMIC_TEXT_BOX,idTextBox);
+			clickToElement(driver,BaseUI.DYNAMIC_TEXT_BOX,idTextBox);
+			driver.findElement(By.xpath(getDynamicLocator(BaseUI.DYNAMIC_TEXT_BOX,idTextBox))).sendKeys(Keys.ENTER);
+			waitForElementVisible(driver, BaseUI.DYNAMIC_ERROR_MESSAGE_TEXT_BOX,idTextBox);
+			messageEnter = getElementText(driver,BaseUI.DYNAMIC_ERROR_MESSAGE_TEXT_BOX,idTextBox) ;
+		}catch (Exception e){
+			messageEnter = "Check message error fail";
 		}
-		return check;
+
+		if(textBoxValue=="" && messageEnter!="Check message error fail" ){
+			messageEnter=messageEnter;
+		}else if(textBoxValue!="" && messageEnter!="Check message error fail"){
+			sendKeyToElement(driver,BaseUI.DYNAMIC_TEXT_BOX,textBoxValue,idTextBox);
+			try {
+				waitForElementVisibleShort(driver, BaseUI.DYNAMIC_ERROR_MESSAGE_TEXT_BOX,idTextBox);
+				if(isElementDisplayed(driver, BaseUI.DYNAMIC_ERROR_MESSAGE_TEXT_BOX,idTextBox)){
+					messageEnter=getElementText(driver,BaseUI.DYNAMIC_ERROR_MESSAGE_TEXT_BOX,idTextBox);
+				}else{
+					messageEnter ="Element not displayed";
+				}
+			}catch (Exception e){
+				messageEnter ="";
+			}
+		}
+
+		try {
+			refreshToPage(driver);
+			waitForElementClickable(driver,BaseUI.DYNAMIC_TEXT_BOX,idTextBox);
+			sendKeyToElement(driver,BaseUI.DYNAMIC_TEXT_BOX,textBoxValue,idTextBox);
+			clickToRegisterButton();
+			waitForElementVisibleShort(driver, BaseUI.DYNAMIC_ERROR_MESSAGE_TEXT_BOX,idTextBox);
+			if(isElementDisplayed(driver, BaseUI.DYNAMIC_ERROR_MESSAGE_TEXT_BOX,idTextBox)){
+				messageClick=getElementText(driver,BaseUI.DYNAMIC_ERROR_MESSAGE_TEXT_BOX,idTextBox);
+			}else{
+				messageClick ="Element not displayed";
+			}
+		}catch (Exception e){
+			messageClick ="";
+		}
+
+		if (messageEnter.equals(messageClick)){
+			message= messageEnter;
+		}else {
+			message ="message Click "+messageClick+", message Enter " + messageEnter ;
+		}
+		return message;
 	}
 
-	public String checkMessageByTextBoxID(String idTextBox,String txtValue){
-		String check="";
-		waitForElementClickable(driver, BaseUI.DYNAMIC_TEXT_BOX,idTextBox);
-		clickToElement(driver, BaseUI.DYNAMIC_TEXT_BOX,idTextBox);
-		sendKeyToElement(driver, BaseUI.DYNAMIC_TEXT_BOX, txtValue,idTextBox);
-		driver.findElement(By.xpath(getDynamicLocator(BaseUI.DYNAMIC_TEXT_BOX,idTextBox))).sendKeys(Keys.ENTER);
-		waitForElementVisible(driver, BaseUI.DYNAMIC_ERROR_MESSAGE_TEXT_BOX,idTextBox);
-		check =getElementText(driver, BaseUI.DYNAMIC_ERROR_MESSAGE_TEXT_BOX,idTextBox);
-		String check2 =checkMessageCLick(idTextBox,txtValue);
-		if (check2.equals(check)){
-			return check;
-		}else {
-			check ="false";
-		}
-		return check;
-	}
 
 	private String checkMessageCLick(String idTextBox,String txtValue) {
 		if (txtValue == "") {
@@ -137,4 +160,31 @@ public class RegisterPageObject extends BasePage {
 	}
 
 
+    public boolean checkErrorMessageTrueValueTextBoxByID(String idTextBox,String textValue) {
+		boolean pass= true;
+		try {
+					waitForElementClickable(driver, BaseUI.DYNAMIC_TEXT_BOX,idTextBox);
+					clickToElement(driver, BaseUI.DYNAMIC_TEXT_BOX,idTextBox);
+					driver.findElement(By.xpath(getDynamicLocator(BaseUI.DYNAMIC_TEXT_BOX,idTextBox))).sendKeys(Keys.ENTER);
+					waitForElementVisible(driver,BaseUI.DYNAMIC_ERROR_MESSAGE_TEXT_BOX,idTextBox);
+					WebElement elementActionSenKey = driver.findElement(By.xpath(getDynamicLocator(BaseUI.DYNAMIC_ERROR_MESSAGE_TEXT_BOX,idTextBox)));
+					waitForElementClickable(driver, BaseUI.DYNAMIC_TEXT_BOX,idTextBox);
+					clickToElement(driver, BaseUI.DYNAMIC_TEXT_BOX,idTextBox);
+					sendKeyToElement(driver,BaseUI.DYNAMIC_TEXT_BOX,textValue,idTextBox);
+					driver.findElement(By.xpath(getDynamicLocator(BaseUI.DYNAMIC_TEXT_BOX,idTextBox))).sendKeys(Keys.ENTER);
+					waitForElementInvisibleOfElementLocated(driver,elementActionSenKey);
+
+					refreshToPage(driver);
+					clickToRegisterButton();
+					waitForElementClickable(driver, BaseUI.DYNAMIC_TEXT_BOX,idTextBox);
+					WebElement elementActionClick = driver.findElement(By.xpath(getDynamicLocator(BaseUI.DYNAMIC_ERROR_MESSAGE_TEXT_BOX,idTextBox)));
+					clickToElement(driver, BaseUI.DYNAMIC_TEXT_BOX,idTextBox);
+					sendKeyToElement(driver,BaseUI.DYNAMIC_TEXT_BOX,textValue,idTextBox);
+					clickToRegisterButton();
+					waitForElementInvisibleOfElementLocated(driver,elementActionClick);
+		}catch (Exception e){
+			pass=false;
+		}
+		return pass;
+    }
 }
