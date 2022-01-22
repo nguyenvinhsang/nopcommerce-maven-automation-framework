@@ -37,4 +37,16 @@ public class PageGeneratorManager {
 		return new SearchPageObject(driver);
 	}
 
+
+	public static MyAccountPageObject getMyAccountPage(WebDriver driver){
+		return new MyAccountPageObject(driver);
+	}
+
+    public static ProductDetailPageObject getProductDetailPage(WebDriver driver) {
+		return new ProductDetailPageObject(driver);
+    }
+
+	public static ProductReviewsPageObject getProductReviewsPage(WebDriver driver) {
+		return new ProductReviewsPageObject(driver);
+	}
 }

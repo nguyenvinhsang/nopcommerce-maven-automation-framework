@@ -37,6 +37,35 @@ public class DataUtil {
         return faker.internet().emailAddress();
     }
 
+    public String getCompanyName() {
+        return faker.company().name();
+    }
+
+
+    public String getCountry() {
+        return faker.address().country();
+    }
+
+    public String getCityName() {
+        return faker.address().cityName();
+    }
+
+    public String getStreetAddresses() {
+        return faker.address().streetAddress();
+    }
+
+    public String getZipCode() {
+        return faker.address().zipCode();
+    }
+
+    public String getPhoneNumber() {
+        return faker.phoneNumber().phoneNumber();
+    }
+
+
+
+
+
     public int getRandomNumber(int maximum,int minimum) {
         return faker.number().numberBetween(minimum, maximum);
     }

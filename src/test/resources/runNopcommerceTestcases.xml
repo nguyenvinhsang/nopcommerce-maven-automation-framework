@@ -10,7 +10,7 @@
 	<test name="Run on chrome">
 		<parameter name="browser" value="chrome" />
 		<classes>
-			<class name="com.nopcommerce.user.User_02_Login_Nopcommerce"/>
+			<class name="com.nopcommerce.user.User_06_My_Account_Nopcommerce_My_Product_Review"/>
 		</classes>
 	</test>
 

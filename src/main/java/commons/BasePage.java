@@ -233,6 +233,11 @@ public class BasePage {
 		select.selectByVisibleText(exValue);
 	}
 
+	public void selectDropdownByValue(WebDriver driver, String locator, String exValue) {
+		select = new Select(getElement(driver, locator));
+		select.selectByValue(exValue);
+	}
+
 	public void selectDropdownByText(WebDriver driver, String locator, String exValue, String... params) {
 		select = new Select(getElement(driver, getDynamicLocator(locator, params)));
 		select.selectByVisibleText(exValue);
@@ -315,6 +320,16 @@ public class BasePage {
 		}
 	}
 
+	public void checkToCheckBoxOrRadio(WebDriver driver, String locator,String...params) {
+		if (!isElementSelected(driver, getDynamicLocator(locator,params))) {
+			if (driver.toString().contains("internet explorer")) {
+				clickToElementByJS(driver, getDynamicLocator(locator,params));
+			} else {
+				getElement(driver,getDynamicLocator(locator,params)).click();
+			}
+		}
+	}
+
 	public void unCheckToCheckBox(WebDriver driver, String locator) {
 		if (isElementSelected(driver, locator)) {
 			if (driver.toString().contains("internet explorer")) {
@@ -344,6 +359,10 @@ public class BasePage {
 
 	public boolean isElementSelected(WebDriver driver, String locator) {
 		return getElement(driver, locator).isSelected();
+	}
+
+	public boolean isElementSelected(WebDriver driver, String locator,String...params) {
+		return getElement(driver, getDynamicLocator(locator,params)).isSelected();
 	}
 
 	public WebDriver switchToIframeByElement(WebDriver driver, String locator) {
@@ -590,9 +609,69 @@ public class BasePage {
 	}
 
 
+	public void clickToButtonByText(WebDriver driver, String txtButton) {
+		scrollToElementJs(driver,BaseUI.DYNAMIC_BUTTON_BY_TEXT,txtButton);
+		waitForElementClickable(driver,BaseUI.DYNAMIC_BUTTON_BY_TEXT,txtButton);
+		clickToElement(driver,BaseUI.DYNAMIC_BUTTON_BY_TEXT,txtButton);
+	}
 
 
+	public String getMessageErrorByLabelName(WebDriver driver, String labelName) {
+		if (isElementDisplayed(driver,BaseUI.DYNAMIC_ERROR_MESSAGE_TEXT_BOX_BY_LABEL,labelName)){
+			return getElementText(driver,BaseUI.DYNAMIC_ERROR_MESSAGE_TEXT_BOX_BY_LABEL,labelName);
+		}else{
+			return null;
+		}
+	}
 
+
+	public void senKeyToTextBoxByLabelName(WebDriver driver, String labelName, Keys enterKey) {
+		getElement(driver,getDynamicLocator(BaseUI.DYNAMIC_TEXT_BOX_BY_LABEL,labelName)).sendKeys(enterKey);
+	}
+
+	public void inputTextBoxByLabelName(WebDriver driver,String labelName, String expValue) {
+		waitForElementClickable(driver, BaseUI.DYNAMIC_TEXT_BOX_BY_LABEL,labelName);
+		sendKeyToElement(driver, BaseUI.DYNAMIC_TEXT_BOX_BY_LABEL,expValue,labelName);
+	}
+
+	public void clickToMenuMyAccountByText(WebDriver driver, String txtValue) {
+		waitForElementClickable(driver, BaseUI.DYNAMIC_MENU_MY_ACCOUNT_BY_TEXT,txtValue);
+		clickToElement(driver, BaseUI.DYNAMIC_MENU_MY_ACCOUNT_BY_TEXT,txtValue);
+
+	}
+
+	public void selectDropDownByLabel(WebDriver driver, String labelName, String txtValue) {
+		select = new Select(getElement(driver, getDynamicLocator(BaseUI.DYNAMIC_DROPDOWN_BY_LABEL,labelName)));
+		select.selectByVisibleText(txtValue);
+	}
+
+	public String getMessageSummaryError(WebDriver driver) {
+		waitForElementVisible(driver,BaseUI.DYNAMIC_SUMMARY_ERROR_MASSAGE);
+		return getElementText(driver,BaseUI.DYNAMIC_SUMMARY_ERROR_MASSAGE);
+	}
+
+	public boolean errorMessageUnDisplayByLabelName(WebDriver driver, String txtLocator) {
+		try {
+			waitForElementInvisible(driver,BaseUI.DYNAMIC_ERROR_MESSAGE_TEXT_BOX_NOT_DISPLAY_BY_LABEL,txtLocator);
+			return true;
+		}catch (Exception e){
+			return false;
+		}
+	}
+
+	public void clickToProductByTitle(WebDriver driver, String titleName) {
+		waitForElementClickable(driver,BaseUI.DYNAMIC_PRODUCT_TITLE_NAME,titleName);
+		clickToElement(driver,BaseUI.DYNAMIC_PRODUCT_TITLE_NAME,titleName);
+	}
+
+	public void clickToLinkByText(WebDriver driver, String nameLink) {
+		waitForElementClickable(driver,BaseUI.DYNAMIC_LINK_BY_TEXT,nameLink);
+		clickToElement(driver,BaseUI.DYNAMIC_LINK_BY_TEXT,nameLink);
+	}
+
+	public void getUrl(WebDriver driver,String txtUrl) {
+		driver.get(txtUrl);
+	}
 
 	private long timeOut= Long.parseLong(GlobalConstants.getGlobalConstants().getLongTimeout());
 
@@ -605,4 +684,7 @@ public class BasePage {
 	private JavascriptExecutor jsExecutor;
 
 	private Actions action;
+
+
+
 }
