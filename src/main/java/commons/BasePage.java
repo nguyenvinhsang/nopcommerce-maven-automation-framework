@@ -2,6 +2,7 @@ package commons;
 
 import java.time.Duration;
 import java.util.List;
+import java.util.Locale;
 import java.util.Set;
 
 import org.openqa.selenium.Alert;
@@ -12,10 +13,7 @@ import org.openqa.selenium.Keys;
 import org.openqa.selenium.WebDriver;
 import org.openqa.selenium.WebElement;
 import org.openqa.selenium.interactions.Actions;
-import org.openqa.selenium.support.ui.ExpectedCondition;
-import org.openqa.selenium.support.ui.ExpectedConditions;
-import org.openqa.selenium.support.ui.Select;
-import org.openqa.selenium.support.ui.WebDriverWait;
+import org.openqa.selenium.support.ui.*;
 import pageUIs.user.nopCommerce.BaseUI;
 
 public class BasePage {
@@ -66,7 +64,7 @@ public class BasePage {
 		alert.sendKeys(expValue);
 	}
 
-	public String getTextAlert(WebDriver driver, String expValue) {
+	public String getTextAlert(WebDriver driver) {
 		alert = waitForAlertPresent(driver);
 		return alert.getText();
 	}
@@ -336,6 +334,16 @@ public class BasePage {
 				clickToElementByJS(driver, locator);
 			} else {
 				getElement(driver, locator).click();
+			}
+		}
+	}
+
+	public void unCheckToCheckBox(WebDriver driver, String locator,String...params) {
+		if (isElementSelected(driver, getDynamicLocator(locator,params))) {
+			if (driver.toString().contains("internet explorer")) {
+				clickToElementByJS(driver, getDynamicLocator(locator,params));
+			} else {
+				getElement(driver,getDynamicLocator(locator,params)).click();
 			}
 		}
 	}
@@ -611,6 +619,7 @@ public class BasePage {
 
 	public void clickToButtonByText(WebDriver driver, String txtButton) {
 		scrollToElementJs(driver,BaseUI.DYNAMIC_BUTTON_BY_TEXT,txtButton);
+		areJQueryAndJSLoadedSuccess(driver);
 		waitForElementClickable(driver,BaseUI.DYNAMIC_BUTTON_BY_TEXT,txtButton);
 		clickToElement(driver,BaseUI.DYNAMIC_BUTTON_BY_TEXT,txtButton);
 	}
@@ -671,6 +680,47 @@ public class BasePage {
 
 	public void getUrl(WebDriver driver,String txtUrl) {
 		driver.get(txtUrl);
+	}
+
+	public void inputSearchTextBox(WebDriver driver, String expValue) {
+		waitForElementClickable(driver,BaseUI.SEARCH_TEXT_BOX);
+		sendKeyToElement(driver,BaseUI.SEARCH_TEXT_BOX,expValue);
+	}
+
+
+
+	public String getMessageSearchButton(WebDriver driver) {
+		waitForElementVisible(driver,BaseUI.MESSAGE_PRODUCT_WRAPPER_WARNING);
+		return  getElementText(driver,BaseUI.MESSAGE_PRODUCT_WRAPPER_WARNING);
+	}
+
+	public boolean checkSearchResult(WebDriver driver, String valueSearch,String countItem) {
+		boolean check=false;
+		List<WebElement> searchElement = driver.findElements(By.xpath(BaseUI.PRODUCT_TITLE_NAME));
+		for ( WebElement item : searchElement) {
+			if (item.getText().toLowerCase(Locale.ROOT).contains(valueSearch.toLowerCase(Locale.ROOT)) && item.isDisplayed() && searchElement.size()==Integer.parseInt(countItem)) {
+				check= true;
+			}else {
+				check= false;
+			}
+		}
+		return check;
+	}
+
+	public void checkToCheckBoxOrRadioByLabel(WebDriver driver, String nameLabel) {
+		waitForElementClickable(driver,BaseUI.DYNAMIC_CHECK_BOX_BY_LABEL,nameLabel);
+		checkToCheckBoxOrRadio(driver,BaseUI.DYNAMIC_CHECK_BOX_BY_LABEL,nameLabel);
+	}
+
+	public void unCheckToCheckBoxOrRadioByLabel(WebDriver driver, String nameLabel) {
+		waitForElementClickable(driver,BaseUI.DYNAMIC_CHECK_BOX_BY_LABEL,nameLabel);
+		unCheckToCheckBox(driver,BaseUI.DYNAMIC_CHECK_BOX_BY_LABEL,nameLabel);
+	}
+
+	public void clickToButtonSearchOfAdvancedSearch(WebDriver driver) {
+		String locator = "("+getDynamicLocator(BaseUI.DYNAMIC_BUTTON_BY_TEXT,"Search")+")"+"[2]";
+		waitForElementClickable(driver,locator);
+		clickToElement(driver,locator);
 	}
 
 	private long timeOut= Long.parseLong(GlobalConstants.getGlobalConstants().getLongTimeout());

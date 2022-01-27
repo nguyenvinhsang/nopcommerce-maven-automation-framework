@@ -14,5 +14,9 @@ public class BaseUI {
     public static final String DYNAMIC_SUMMARY_ERROR_MASSAGE = "//div[@class='message-error validation-summary-errors']//li";
     public static final String DYNAMIC_ERROR_MESSAGE_TEXT_BOX_NOT_DISPLAY_BY_LABEL = "//label[contains(text(),'%s')]/following-sibling::span[@class='field-validation-valid']";
     public static final String DYNAMIC_PRODUCT_TITLE_NAME = "//h2[@class='product-title']/a[text()='%s']";
+    public static final String PRODUCT_TITLE_NAME = "//h2[@class='product-title']/a";
     public static final String DYNAMIC_LINK_BY_TEXT = "//a[text()='%s']";
+    public static final String SEARCH_TEXT_BOX = "//input[@id='small-searchterms']";
+    public static final String MESSAGE_PRODUCT_WRAPPER_WARNING = "//div[@class='products-wrapper']/div";
+    public static final String DYNAMIC_CHECK_BOX_BY_LABEL = "//label[contains(text(),'%s')]/preceding-sibling::input[@type='checkbox']";
 }
