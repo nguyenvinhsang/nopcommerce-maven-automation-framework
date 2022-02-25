@@ -1,32 +1,28 @@
 package retryConfig;
 
 
-import org.apache.logging.log4j.LogManager;
-import org.apache.logging.log4j.Logger;
+import org.testng.IRetryAnalyzer;
 import org.testng.ITestResult;
-import org.testng.util.RetryAnalyzerCount;
 
-import java.util.concurrent.atomic.AtomicInteger;
 
-public class Retry extends RetryAnalyzerCount {
-    private static final int MAX_RETRY_ATTEMPTS = 1;
-    private AtomicInteger counter = new AtomicInteger(1); //used only for logging purposes
 
-    public Retry() {
-        setCount(MAX_RETRY_ATTEMPTS);
-    }
+public class Retry implements IRetryAnalyzer {
 
+    private int count = 0;
+    private static int maxTry = 1;
     @Override
-    public boolean retryMethod(ITestResult result) {
-        // log example: [15/04/20 13:31] WARN [RetryAnalyzer] RETRY failed test 'displaySearchResultForValidInput' (1 out of 3 times)
-        String methodName = result.getMethod().getMethodName();
-        log.warn("RETRY failed test '{}' ({} out of {} times)",
-                methodName,
-                this.counter.getAndIncrement(),
-                MAX_RETRY_ATTEMPTS);
-        // enough is only the return statement
-        return true;
+    public boolean retry(ITestResult iTestResult) {
+        if (!iTestResult.isSuccess()) {                      //Check if test not succeed
+            if (count < maxTry) {                            //Check if maxtry count is reached
+                count++;                                     //Increase the maxTry count by 1
+                iTestResult.setStatus(ITestResult.SUCCESS_PERCENTAGE_FAILURE);  //Mark test as failed
+                return true;                                 //Tells TestNG to re-run the test
+            } else {
+                iTestResult.setStatus(ITestResult.FAILURE);  //If maxCount reached,test marked as failed
+            }
+        } else {
+            iTestResult.setStatus(ITestResult.SUCCESS);      //If test passes, TestNG marks it as passed
+        }
+        return false;
     }
-    private static final Logger log = LogManager.getLogger(Retry.class);
-
 }

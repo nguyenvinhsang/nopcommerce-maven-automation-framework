@@ -116,7 +116,7 @@ public class User_05_My_Account_Nopcommerce_Change_Password extends BaseTest {
         logInfo("User_My_Account_Nopcommerce_Change_Password_05_True_Value - Step 07 : Click To Change password button");
         myAccountPage.clickToButtonByText(driver, "Change password");
         logInfo("User_My_Account_Nopcommerce_Change_Password_05_True_Value - Step 08 : Verify success message 'Password was changed' and close notification ");
-        verifyEquals(myAccountPage.successMessage(),"Password was changed");
+        verifyEquals(myAccountPage.successMessage(driver),"Password was changed");
         logInfo("User_My_Account_Nopcommerce_Change_Password_05_True_Value - Step 09 : Click Log Out link");
         myAccountPage.clickToHeaderLinkByText(driver,"Log out");
         logInfo("User_My_Account_Nopcommerce_Change_Password_05_True_Value - Step 09 : Click Log in link");

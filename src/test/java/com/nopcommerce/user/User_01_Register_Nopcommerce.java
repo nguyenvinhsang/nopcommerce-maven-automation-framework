@@ -98,7 +98,7 @@ public class User_01_Register_Nopcommerce extends BaseTest {
         startTest(method.getName(),"Register_With_Valid_Value");
         logInfo("User_01_Register_To_System - Step 01 : Click To Register Link");
         homePage.clickToHeaderLinkByText(driver,"Register");
-        registerPage=PageGeneratorManager.getRegisterPage(driver);
+        registerPage= PageGeneratorManager.getRegisterPage(driver);
         logInfo("User_01_Register_To_System - Step 02 : Click To Mail Radio");
         registerPage.clickToMaleRadio();
         logInfo("User_01_Register_To_System - Step 03 : Enter to Fist Name Text Box witch value "+ txtFistName);

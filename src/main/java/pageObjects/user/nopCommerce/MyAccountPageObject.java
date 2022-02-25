@@ -3,10 +3,9 @@ package pageObjects.user.nopCommerce;
 import commons.BasePage;
 import org.openqa.selenium.WebDriver;
 import org.openqa.selenium.WebElement;
-import org.testng.Assert;
 import pageUIs.user.nopCommerce.BaseUI;
 import pageUIs.user.nopCommerce.MyAccountPageUI;
-import pageUIs.user.nopCommerce.ProductDetailPageUI;
+
 
 public class MyAccountPageObject extends BasePage {
     WebDriver driver;
@@ -59,21 +58,12 @@ public class MyAccountPageObject extends BasePage {
         }
     }
 
-    public String successMessage() {
-        waitForElementVisible(driver,MyAccountPageUI.SUCCESS_MESSAGE);
-        WebElement element = getElement(driver,MyAccountPageUI.SUCCESS_MESSAGE);
-        String successMessage =getElementText(driver,MyAccountPageUI.SUCCESS_MESSAGE);
-        waitForElementClickable(driver,MyAccountPageUI.BUTTON_CLOSE_SUCCESS_MESSAGE);
-        clickToElement(driver,MyAccountPageUI.BUTTON_CLOSE_SUCCESS_MESSAGE);
-        waitForElementStaleness(driver,element);
-        return successMessage;
-    }
 
     public boolean verifyProductReview(String txtReviewTitle, String txtReviewText, String txtProductTitleName) {
-        String reviewTitle= getElementText(driver, MyAccountPageUI.PRODUCT_REVIEW_TITLE);
-        String reviewText= getElementText(driver, MyAccountPageUI.PRODUCT_REVIEW_TEXT);
-        String productTitle= getElementText(driver, MyAccountPageUI.PRODUCT_TITLE);
-        if (reviewTitle==txtReviewTitle && reviewText== txtReviewText && productTitle==txtProductTitleName ){
+        String reviewTitle= getElementText(driver, MyAccountPageUI.PRODUCT_REVIEW_TITLE).trim();
+        String reviewText= getElementText(driver, MyAccountPageUI.PRODUCT_REVIEW_TEXT).trim();
+        String productTitle= getElementText(driver, MyAccountPageUI.PRODUCT_TITLE).trim();
+        if (reviewTitle.equals(txtReviewTitle) && reviewText.equals(txtReviewText) && productTitle.equals(txtProductTitleName) ){
             return true;
         }else{
             return false;

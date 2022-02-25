@@ -15,6 +15,7 @@ import org.openqa.selenium.WebElement;
 import org.openqa.selenium.interactions.Actions;
 import org.openqa.selenium.support.ui.*;
 import pageUIs.user.nopCommerce.BaseUI;
+import pageUIs.user.nopCommerce.WishlistPageUI;
 
 public class BasePage {
 
@@ -523,6 +524,7 @@ public class BasePage {
 		explicitWait.until(ExpectedConditions.visibilityOf(getElement(driver, locator)));
 	}
 
+
 	public void waitForElementVisible(WebDriver driver, String locator, String... params) {
 		explicitWait = new WebDriverWait(driver, Duration.ofSeconds(timeOut));
 		explicitWait.until(ExpectedConditions.visibilityOf(getElement(driver, getDynamicLocator(locator, params))));
@@ -544,6 +546,12 @@ public class BasePage {
 		explicitWait = new WebDriverWait(driver, Duration.ofSeconds(timeOut));
 		explicitWait
 				.until(ExpectedConditions.elementToBeSelected(getElement(driver, getDynamicLocator(locator, params))));
+	}
+
+	public void waitForElementToBeSelected(WebDriver driver, String locator) {
+		explicitWait = new WebDriverWait(driver, Duration.ofSeconds(timeOut));
+		explicitWait
+				.until(ExpectedConditions.elementToBeSelected(getElement(driver, locator)));
 	}
 
 	public String getDynamicLocator(String locator, String... params) {
@@ -708,19 +716,90 @@ public class BasePage {
 	}
 
 	public void checkToCheckBoxOrRadioByLabel(WebDriver driver, String nameLabel) {
-		waitForElementClickable(driver,BaseUI.DYNAMIC_CHECK_BOX_BY_LABEL,nameLabel);
-		checkToCheckBoxOrRadio(driver,BaseUI.DYNAMIC_CHECK_BOX_BY_LABEL,nameLabel);
+		waitForElementClickable(driver,BaseUI.DYNAMIC_CHECK_BOX_OR_RADIO_BY_LABEL,nameLabel);
+		checkToCheckBoxOrRadio(driver,BaseUI.DYNAMIC_CHECK_BOX_OR_RADIO_BY_LABEL,nameLabel);
 	}
 
 	public void unCheckToCheckBoxOrRadioByLabel(WebDriver driver, String nameLabel) {
-		waitForElementClickable(driver,BaseUI.DYNAMIC_CHECK_BOX_BY_LABEL,nameLabel);
-		unCheckToCheckBox(driver,BaseUI.DYNAMIC_CHECK_BOX_BY_LABEL,nameLabel);
+		waitForElementClickable(driver,BaseUI.DYNAMIC_CHECK_BOX_OR_RADIO_BY_LABEL,nameLabel);
+		unCheckToCheckBox(driver,BaseUI.DYNAMIC_CHECK_BOX_OR_RADIO_BY_LABEL,nameLabel);
 	}
 
 	public void clickToButtonSearchOfAdvancedSearch(WebDriver driver) {
 		String locator = "("+getDynamicLocator(BaseUI.DYNAMIC_BUTTON_BY_TEXT,"Search")+")"+"[2]";
 		waitForElementClickable(driver,locator);
 		clickToElement(driver,locator);
+	}
+
+	public void clickToSide2ByTitleAndNameLink(WebDriver driver, String nameTitle, String nameLink) {
+		waitForElementClickable(driver,BaseUI.DYNAMIC_SIDE_2_BY_TEXT,nameTitle,nameLink);
+		clickToElement(driver,BaseUI.DYNAMIC_SIDE_2_BY_TEXT,nameTitle,nameLink);
+	}
+
+	public void clickToHeaderMenuByText(WebDriver driver, String txtName) {
+		waitForElementClickable(driver,BaseUI.DYNAMIC_HEADER_MENU,txtName);
+		clickToElement(driver,BaseUI.DYNAMIC_HEADER_MENU,txtName);
+	}
+
+	public void selectDropDownBySpan(WebDriver driver, String spanName, String txtValue) {
+		select = new Select(getElement(driver, getDynamicLocator(BaseUI.DYNAMIC_DROPDOWN_BY_SPAN,spanName)));
+		select.selectByVisibleText(txtValue);
+	}
+
+	public String successMessage(WebDriver driver) {
+		waitForElementVisible(driver,BaseUI.SUCCESS_MESSAGE);
+		WebElement element = getElement(driver,BaseUI.SUCCESS_MESSAGE);
+		String successMessage =getElementText(driver,BaseUI.SUCCESS_MESSAGE);
+		waitForElementClickable(driver,BaseUI.BUTTON_CLOSE_SUCCESS_MESSAGE);
+		clickToElement(driver,BaseUI.BUTTON_CLOSE_SUCCESS_MESSAGE);
+		waitForElementStaleness(driver,element);
+		return successMessage;
+	}
+
+	public String getDataTableByIndex(WebDriver driver,String locator,String row, String colum) {
+		String tabIndexLocator=locator+"//tr["+row+"]/td["+colum+"]";
+		waitForElementVisible(driver,tabIndexLocator);
+		return getElementText(driver,tabIndexLocator);
+	}
+
+	public String getTabIndexColumByTitle(WebDriver driver, String locator, String titleColum) {
+		int i=1;
+		String tabColumLocator=locator+"//th";
+		List<WebElement> th =driver.findElements(By.xpath(tabColumLocator));
+		for (WebElement item: th) {
+			if (item.getText().equals(titleColum)) {
+				break;
+			}else{
+				i++;
+			}
+		}
+		return String.valueOf(i);
+	}
+
+	public String getFristProductName(WebDriver driver) {
+		String result;
+		areJQueryAndJSLoadedSuccess(driver);
+		driver.manage().timeouts().implicitlyWait(Duration.ofSeconds(1));
+		try {
+			waitForElementVisible(driver, WishlistPageUI.TABLE_PRODUCT);
+			String colum= getTabIndexColumByTitle(driver,WishlistPageUI.TABLE_PRODUCT,"Product(s)");
+			result=getDataTableByIndex(driver, WishlistPageUI.TABLE_PRODUCT,"1",colum);
+		}catch (Exception e){
+			System.out.println(e);
+			result="";
+		}
+		driver.manage().timeouts().implicitlyWait(Duration.ofSeconds(30));
+		return result;
+	}
+
+	public String getPageBodyNoData(WebDriver driver) {
+		waitForElementVisible(driver,BaseUI.PAGE_BODY_NO_DATA);
+		return getElementText(driver,BaseUI.PAGE_BODY_NO_DATA).trim();
+	}
+
+	public void clickToButtonAddCompareListByProductTitle(WebDriver driver, String productTitle) {
+		waitForElementClickable(driver,BaseUI.DYNAMIC_ADD_COMPARE_BUTTON,productTitle);
+		clickToElement(driver,BaseUI.DYNAMIC_ADD_COMPARE_BUTTON,productTitle);
 	}
 
 	private long timeOut= Long.parseLong(GlobalConstants.getGlobalConstants().getLongTimeout());
@@ -736,5 +815,8 @@ public class BasePage {
 	private Actions action;
 
 
-
+	public void clickToFooterLinkByText(WebDriver driver, String nameLink) {
+		waitForElementClickable(driver,BaseUI.DYNAMIC_FOOTER_LINK,nameLink);
+		clickToElement(driver,BaseUI.DYNAMIC_FOOTER_LINK,nameLink);
+	}
 }
